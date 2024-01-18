@@ -5,7 +5,7 @@ case class Hospital(
                   longitude: String,
                   latitude: String,
                   specialty: String,
-                  available_beds: Int,
+                  var available_beds: Int,
                   events: List[Event] = List.empty
                ){
   
@@ -20,6 +20,7 @@ case class Hospital(
   def hasEnoughPlace: Boolean = available_beds > 0
   
   def addEvent(event: Event): Hospital = {
+    available_beds -= 1
     val newEvents = event :: events
     Hospital(hospital_name, longitude, latitude, specialty, available_beds - 1, newEvents)
   }
