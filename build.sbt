@@ -5,7 +5,7 @@ val zioHttpVersion = "3.0.0-RC3"
 val scalaCsvVersion = "1.3.10"
 
 ThisBuild / organization := "fr.efrei"
-ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / version := "POC"
 ThisBuild / scalaVersion := scala3Version
 
 lazy val root = project

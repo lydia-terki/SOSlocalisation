@@ -1,12 +1,11 @@
-import zio.{ExitCode, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault}
+import zio.{Console, ExitCode, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault}
 
 object Main extends ZIOAppDefault {
   
-  override val run: ZIO[Any, Throwable, ExitCode] =
-    for {
-      x <- ZIO.succeed()
-      hospitals <- // generateHospital 
-      events <- // generateEvents
+  override val run: ZIO[ZIOAppArgs & Scope, Throwable, ExitCode] = for {
+      hospitals: List[Hospital] <- HospitalFileStream.generateHospitals
+      events: List[Event] <- EventFileStream.generateEvents
+      hospitalsWithEvent: List[Hospital] = HospitalChooser.chooseHospitalForEvents(events, hospitals)
     } yield ExitCode.success
 
 }
