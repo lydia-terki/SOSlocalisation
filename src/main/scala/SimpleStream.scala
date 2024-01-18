@@ -1,4 +1,4 @@
-import zio.*
+import zio._
 import zio.stream._
 
 object SimpleStream extends ZIOAppDefault {
