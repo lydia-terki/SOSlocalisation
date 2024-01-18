@@ -1,11 +1,11 @@
-Date,First Name,Last Name,Age, Latitude, Longitude, Pain (1-10), Motif
-2024-01-18,Susan,Peterson,61, 48 , 2 ,6,Neurologist
-2024-01-18,Joseph,Tran,29,48, 2,4,Orthopedist
-2024-01-18,Andrew,Chen,98,48, 2,5,Pediatrician
-2024-01-18,Emily,Lopez,27, 48, 2, 9, Neurologist
-2024-01-18,Albert,Rivera,18, 48, 2, 4, Dermatologist
-2024-01-18,Kathryn,Alexander,93, 49, 2 ,2,Dermatologist
-2024-01-18,Michael,Young,54, 48, 2 ,6, Dermatologist
-2024-01-18,Kimberly,Lopez,76, 48, 2, 1, Orthopedist
-2024-01-18,Steven,Foster,29, 49, 2, 4, Neurologist
-2024-01-18,Sierra,Holt,14, 48, 2 ,3,Cardiologist
+date,firstname,lastname,age,latitude,longitude,pain,specialty
+2024-01-15,Connie,Massey,70,49,2,3,Dermatology
+2024-01-18,Veronica,Rodriguez,62,48,2,4,Neurology
+2024-01-18,Carl,George,27,49,2,8,Pediatrics
+2024-01-18,Amy,Stevens,40,49,2,2,Cardiology
+2024-01-18,Brandon,Ramos,17,48,2,4,Pediatrics
+2024-01-18,David,Smith,61,49,2,2,Orthopedics
+2024-01-18,Cory,Rodriguez,12,48,2,2,Dermatology
+2024-01-18,Lauren,Long,31,48,2,1,Cardiology
+2024-01-18,Denise,Morgan,92,49,2,2,Cardiology
+2024-01-18,Brittany,Lewis,70,48,2,9,Dermatology
