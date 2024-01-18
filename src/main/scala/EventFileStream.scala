@@ -6,7 +6,7 @@ import zio._
 import zio.stream.ZStream
 import com.github.tototoshi.csv._
 
-object PatientFileStream extends ZIOAppDefault {
+object EventFileStream extends ZIOAppDefault {
 
   override val run: ZIO[Any & ZIOAppArgs & Scope, Throwable, Unit] =
     for {

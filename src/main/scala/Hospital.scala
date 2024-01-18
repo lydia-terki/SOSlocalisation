@@ -8,6 +8,7 @@ case class Hospital(
                   latitude: String,
                   specialty: String,
                   available_beds: Int,
+                  events: List[Event] = List.empty
                )
 
 object Hospital {
