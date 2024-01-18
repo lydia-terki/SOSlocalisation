@@ -1,15 +1,14 @@
-
-import GameDates.*
 import com.github.tototoshi.csv.*
 import zio.*
 import zio.stream.ZStream
 
-object HospitalFileStream {
+import scala.io.Source
 
-  def generateHospitals: ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Hospital]] =
+object HospitalFileStream extends ZIOAppDefault {
+
+  def generateHospitals() : ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Hospital]] =
     for {
-      url <- ZIO.succeed(getClass.getClassLoader.getResource("hospitals.csv"))
-      source <- ZIO.succeed(CSVReader.open(url.getFile))
+      source <- ZIO.succeed(CSVReader.open(Source.fromResource("hospitals.csv")))
       hospitals <- ZStream
         .fromIterator[Seq[String]](source.iterator)
         .drop(1)
@@ -28,4 +27,6 @@ object HospitalFileStream {
       _ <- ZIO.succeed(source.close())
       hospitalsList <- ZIO.succeed(hospitals.toList)
     } yield hospitalsList
+
+  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = generateHospitals()
 }

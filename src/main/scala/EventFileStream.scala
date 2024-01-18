@@ -1,17 +1,15 @@
-
-import GameDates.*
-import SeasonYears.*
 import java.time.LocalDate
-import zio._
+import zio.*
 import zio.stream.ZStream
-import com.github.tototoshi.csv._
+import com.github.tototoshi.csv.*
 
-object EventFileStream {
+import scala.io.Source
 
-  def generateEvents: ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Event]] =
+object EventFileStream extends ZIOAppDefault {
+
+  def generateEvents(): ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Event]] =
     for {
-      url <- ZIO.succeed(getClass.getClassLoader.getResource("events.csv"))
-      source <- ZIO.succeed(CSVReader.open(url.getFile))
+      source <- ZIO.succeed(CSVReader.open(Source.fromResource("events.csv")))
       events <- ZStream
         .fromIterator[Seq[String]](source.iterator)
         .drop(1)
@@ -33,4 +31,6 @@ object EventFileStream {
       _ <- ZIO.succeed(source.close())
       eventsList <- ZIO.succeed(events.toList)
     } yield eventsList
+
+  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = generateEvents()
 }
