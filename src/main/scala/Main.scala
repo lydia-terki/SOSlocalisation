@@ -1,4 +1,4 @@
-import zio.{Console, ExitCode, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault}
+import zio.{ExitCode, Scope, ZIO, ZIOAppArgs, ZIOAppDefault}
 
 object Main extends ZIOAppDefault {
   
