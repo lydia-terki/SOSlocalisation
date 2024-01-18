@@ -6,7 +6,7 @@ import zio.stream.ZStream
 
 object HospitalFileStream extends ZIOAppDefault {
 
-  override val run: ZIO[Any & ZIOAppArgs & Scope, Throwable, Unit] =
+  override val run: ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Hospital]] =
     for {
       url <- ZIO.succeed(getClass().getClassLoader().getResource("hospital.csv"))
       source <- ZIO.succeed(CSVReader.open(url.getFile()))
@@ -28,7 +28,8 @@ object HospitalFileStream extends ZIOAppDefault {
             }
         }
         .collectSome[Hospital]
-        .foreach(Console.printLine(_))
+        .runCollect
       _ <- ZIO.succeed(source.close())
-    } yield ()
+      hospitalsList <- ZIO.succeed(hospitals.toList)
+    } yield hospitalsList
 }

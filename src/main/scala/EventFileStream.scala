@@ -8,7 +8,7 @@ import com.github.tototoshi.csv._
 
 object EventFileStream extends ZIOAppDefault {
 
-  override val run: ZIO[Any & ZIOAppArgs & Scope, Throwable, Unit] =
+  override val run: ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Event]] =
     for {
       url <- ZIO.succeed(getClass().getClassLoader().getResource("patient.csv"))
       source <- ZIO.succeed(CSVReader.open(url.getFile()))
@@ -32,7 +32,8 @@ object EventFileStream extends ZIOAppDefault {
             }
         }
         .collectSome[Event]
-        .foreach(Console.printLine(_))
+        .runCollect
       _ <- ZIO.succeed(source.close())
-    } yield ()
+      eventsList <- ZIO.succeed(events.toList)
+    } yield eventsList
 }
