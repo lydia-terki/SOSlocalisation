@@ -18,6 +18,7 @@ lazy val root = project
       "dev.zio" %% "zio-http" % zioHttpVersion,
       "dev.zio" %% "zio-json" % zioJsonVersion,
       "dev.zio" %% "zio-nio" % "2.0.1",
-      "com.github.tototoshi" %% "scala-csv" % scalaCsvVersion
+      "com.github.tototoshi" %% "scala-csv" % scalaCsvVersion,
+      "org.scalatest" %% "scalatest" % "3.2.10" % "test"
     )
   )

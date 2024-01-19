@@ -1,5 +1,15 @@
+/**
+ * The `HospitalChooser` object provides functionality to choose hospitals for events based on pain levels and distances.
+ */
 object HospitalChooser {
 
+  /**
+   * Chooses hospitals for events based on pain levels and distances.
+   *
+   * @param events    The list of events for which hospitals need to be chosen.
+   * @param hospitals The list of hospitals available for selection.
+   * @return A list of hospitals with updated event associations.
+   */
   def chooseHospitalForEvents(events: List[Event], hospitals: List[Hospital]): List[Hospital] =
     for {
       event: Event <- events
@@ -20,9 +30,16 @@ object HospitalChooser {
         }
     } yield newHospital
 
-  private def getHospitalNearby(hospital: List[Hospital], event: Event): Hospital = {
+  /**
+   * Finds the nearest hospital with enough available beds for a given event.
+   *
+   * @param hospitals The list of hospitals available for selection.
+   * @param event     The event for which to find the nearest hospital.
+   * @return The nearest hospital with enough available beds for the given event.
+   */
+  private def getHospitalNearby(hospitals: List[Hospital], event: Event): Hospital = {
     val hospitalWithDistance = for {
-      h <- hospital.filter(_.hasEnoughPlace)
+      h <- hospitals.filter(_.hasEnoughPlace)
       distance = h.getDistance(event)
       if h.hasEnoughPlace 
       result = h

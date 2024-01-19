@@ -22,8 +22,8 @@ case class Event(
                   lastname: String,
                   firstname: String,
                   age: Int,
-                  latitude: Int,
-                  longitude: Int,
+                  latitude: Double,
+                  longitude: Double,
                   pain: Int,
                   need: String,
                )

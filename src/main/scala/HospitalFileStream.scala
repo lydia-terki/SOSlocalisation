@@ -6,7 +6,7 @@ import scala.io.Source
 
 object HospitalFileStream extends ZIOAppDefault {
 
-  def generateHospitals() : ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Hospital]] =
+  def generateHospitals : ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Hospital]] =
     for {
       source <- ZIO.succeed(CSVReader.open(Source.fromResource("hospitals.csv")))
       hospitals <- ZStream
@@ -15,9 +15,9 @@ object HospitalFileStream extends ZIOAppDefault {
         .map[Option[Hospital]] {
           line =>
             Some(Hospital(
-              hospital_name = line(0),
-              longitude = line(1),
-              latitude = line(2),
+              hospital_name = line.head,
+              longitude = line(1).toDouble,
+              latitude = line(2).toDouble,
               specialty = line(3),
               available_beds = line(4).toInt
             ))
@@ -28,5 +28,5 @@ object HospitalFileStream extends ZIOAppDefault {
       hospitalsList <- ZIO.succeed(hospitals.toList)
     } yield hospitalsList
 
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = generateHospitals()
+  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = generateHospitals
 }

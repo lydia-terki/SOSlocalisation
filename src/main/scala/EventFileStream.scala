@@ -5,9 +5,17 @@ import com.github.tototoshi.csv.*
 
 import scala.io.Source
 
+/**
+ * The `EventFileStream` object provides functionality to read events data from a CSV file.
+ */
 object EventFileStream extends ZIOAppDefault {
 
-  def generateEvents(): ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Event]] =
+  /**
+   * Reads events data from the "events.csv" file and returns a list of events.
+   *
+   * @return A ZIO effect producing a list of events read from the CSV file.
+   */
+  def generateEvents: ZIO[Any & ZIOAppArgs & Scope, Throwable, List[Event]] =
     for {
       source <- ZIO.succeed(CSVReader.open(Source.fromResource("events.csv")))
       events <- ZStream
@@ -32,5 +40,10 @@ object EventFileStream extends ZIOAppDefault {
       eventsList <- ZIO.succeed(events.toList)
     } yield eventsList
 
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = generateEvents()
+  /**
+   * The main entry point for the ZIO application. Calls `generateEvents` to read and process events data.
+   *
+   * @return A ZIO effect representing the result of reading events from the CSV file.
+   */
+  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = generateEvents
 }
