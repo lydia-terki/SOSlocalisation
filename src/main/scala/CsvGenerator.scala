@@ -1,6 +1,4 @@
 import zio._
-import zio.Console
-import zio.stream.ZStream
 import com.github.tototoshi.csv.CSVWriter
 import java.io.File
 import scala.util.Random
@@ -8,8 +6,8 @@ import com.github.tototoshi.csv.defaultCSVFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-val NB_PATIENTS = 15;
-
+val NB_PATIENTS = 15
+val NB_HOSPITALS = 5
 object CsvGenerator extends ZIOAppDefault {
 
   private def generateString: String = {
@@ -18,13 +16,15 @@ object CsvGenerator extends ZIOAppDefault {
     alphabet.map(x => alphabet.charAt(Random.between(0, alphabet.length))).substring(0, nameLength)
   }
 
+  val now: String = LocalDate.now()
+    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+  private val listSpec = List("generalist", "cardiologist", "neurologist", "pediatrician", "dermatologist", "gynecologist", "ophthalmologist")
+  private val listSpecHospitals = List("general", "cardiology", "neurology", "pediatrics", "dermatology", "gynecology", "ophthalmology")
+  val distanceFactor: Double = Random.nextDouble() * 0.2 + 0.8
+
   private def generateEventsData: ZIO[Any, Nothing, List[Event]] =
     ZIO.succeed{
-      val distanceFactor = Random.nextDouble() * 0.2 + 0.8
       List.fill(NB_PATIENTS) {
-        val now = LocalDate.now()
-          .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val listSpec = List("generalist", "cardiologist", "neurologist", "pediatrician", "dermatologist", "gynecologist", "ophthalmologist")
         Event(
           lastname = generateString,
           firstname = generateString,
@@ -37,8 +37,23 @@ object CsvGenerator extends ZIOAppDefault {
         )
       }
     }
-  
-  private def writeCsv(events: List[Event]): ZIO[Any, Nothing, Unit] = ZIO.succeed {
+
+  private def generateHospitalsData: ZIO[Any, Nothing, List[Hospital]] =
+    ZIO.succeed {
+      List.fill(NB_HOSPITALS) {
+
+        Hospital(
+          hospital_name = generateString,
+          latitude = Random.between(1, 100).toString,
+          longitude = Random.between(1, 100).toString,
+          specialty = listSpecHospitals(Random.between(0, listSpecHospitals.length)),
+          available_beds = Random.between(1, 250)
+        )
+      }
+    }
+
+
+  private def writeCsvEvents(events: List[Event]): ZIO[Any, Nothing, Unit] = ZIO.succeed {
     val header = List("Date", "FirstName", "LastName", "Age", "Latitude", "Longitude", "Pain", "Need")
     val body = events.map(event => List(event.date, event.firstname, event.lastname, event.age, event.latitude, event.longitude, event.pain, event.need))
     val outputFile = new File(s"src/main/resources/events.csv")
@@ -56,9 +71,31 @@ object CsvGenerator extends ZIOAppDefault {
     }
   }
 
+  private def writeCsvHospitals(hospitals: List[Hospital]): ZIO[Any, Nothing, Unit] = ZIO.succeed {
+    val header = List("HospitalName", "Latitude", "Longitude", "Specialty", "AvailableBeds")
+    val body = hospitals.map(hospital => List(hospital.hospital_name, hospital.latitude, hospital.longitude, hospital.specialty, hospital.available_beds))
+    val outputFile = new File(s"src/main/resources/hospitals.csv")
+
+    if (!outputFile.exists()) {
+      val csvWriter = CSVWriter.open(outputFile)
+      try {
+        csvWriter.writeAll(header :: body)
+      } finally {
+        csvWriter.close()
+      }
+      println(s"New file at : ${outputFile.getAbsolutePath}")
+    } else {
+      println(s"The file ${outputFile.getAbsolutePath} already exists.")
+    }
+  }
+
   override val run: ZIO[Any, Throwable, ExitCode] =
     for {
       events <- generateEventsData
-      _      <- writeCsv(events)
+      _      <- writeCsvEvents(events)
+
+      hospitals <- generateHospitalsData
+      _      <- writeCsvHospitals(hospitals)
+
     } yield ExitCode.success
 }
