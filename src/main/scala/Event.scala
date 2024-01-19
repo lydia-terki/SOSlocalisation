@@ -6,7 +6,7 @@ object EventDates {
 
   opaque type EventDates = LocalDate
 
-  object GameDate {
+  object EventDates {
 
     def apply(value: LocalDate): EventDates = value
   }
@@ -25,7 +25,7 @@ case class Event(
                   latitude: Int,
                   longitude: Int,
                   pain: Int,
-                  cause: String,
+                  need: String,
                )
 
 object Event {

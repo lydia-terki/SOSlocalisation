@@ -23,7 +23,7 @@ object EventFileStream extends ZIOAppDefault {
               latitude = line(4).toInt,
               longitude = line(5).toInt,
               pain = line(6).toInt,
-              cause = line(7)
+              need = line(7)
             ))
         }
         .collectSome[Event]
