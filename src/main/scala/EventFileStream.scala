@@ -16,7 +16,7 @@ object EventFileStream extends ZIOAppDefault {
         .map[Option[Event]] {
           line =>
             Some(Event(
-              date = EventDates.GameDate(LocalDate.parse(line.head)),
+              date = EventDates.EventDates(LocalDate.parse(line.head)),
               lastname = line(1),
               firstname = line(2),
               age = line(3).toInt,
