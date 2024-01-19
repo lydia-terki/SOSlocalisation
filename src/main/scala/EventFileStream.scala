@@ -20,14 +20,14 @@ object EventFileStream extends ZIOAppDefault {
               case line if line.head == "date" => None
               case line =>
                 Some(Event(
-                  date = EventDates.GameDate(LocalDate.parse(line.head)),
+                  date = EventDates.EventDates(LocalDate.parse(line.head)),
                   lastname = line(1),
                   firstname = line(2),
                   age = line(3).toInt,
                   latitude = line(4).toInt,
                   longitude = line(5).toInt,
                   pain = line(6).toInt,
-                  cause = line(7)
+                  need = line(7)
                 ))
             }
         }
